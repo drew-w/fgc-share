@@ -1,17 +1,10 @@
 import { Text, Heading, Flex, Stack, Box } from "@chakra-ui/react";
 import DarkModeSwitcher from "../components/DarkModeSwitcher";
 import styles from "../styles/Home.module.css";
-import Login from '../components/Login'
+import Login from "../components/Login";
 
 export default function Home() {
   return (
-    <Flex>
-      <Box>
-        <DarkModeSwitcher />
-        <Box>
-          <Login/>
-        </Box>
-      </Box>
-    </Flex>
+   <Login/>
   );
 }

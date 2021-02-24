@@ -17,6 +17,7 @@
 - users will be able to filter post based on certain characters
 - users will be able to set favorite games and favorite characters, so by default the only posts they will see will be for those characters
 - users can follow other users
+- embed video to show combo in action
 
 ## DATABASE
 
