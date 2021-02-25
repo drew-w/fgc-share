@@ -7,7 +7,7 @@
 - users can update a post
 - users can read all posts
 - users can read posts by other users
-- users must verify email address before gaining full functionality
+- users can request an email if they forgot their password
 
 ## ICEBOX
 
