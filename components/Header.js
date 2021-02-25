@@ -54,12 +54,18 @@ const Header = () => {
           pt={[4, 4, 0, 0]}
           flexGrow={1}
         >
-          <LinkN href='/home'>
+          <LinkN href="/home">
             <MenuItems>Home</MenuItems>
           </LinkN>
 
-          <MenuItems>Create</MenuItems>
-          <MenuItems>Logout</MenuItems>
+          <LinkN href="/create">
+            <MenuItems>Create</MenuItems>
+          </LinkN>
+
+          <LinkN href="/">
+            <MenuItems>Logout</MenuItems>
+          </LinkN>
+
           <DarkModeSwitcher />
         </Stack>
       </Box>
