@@ -1,13 +1,11 @@
 import {
-  Stack,
+  Input,
   Flex,
   Box,
   Button,
   Heading,
   Image,
-  Text,
   useColorMode,
-  Link,
   Menu,
   MenuButton,
   MenuItem,
@@ -19,13 +17,16 @@ import inputsUNI from "../temp/inputs-uni.json";
 import inputsSFV from "../temp/inputs-sf.json";
 import inputsGG from "../temp/inputs-gg.json";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 const ComboBuilder = () => {
   const { colorMode } = useColorMode();
+  const router = useRouter();
   const [current, addToCurrent] = useState([]);
   const [currentGame, selectGame] = useState("GBVS");
   const [currentChar, selectChar] = useState("Gran");
   const [inputs, changeInputs] = useState(inputsGBVS);
+  const [value, setValue] = useState("")
 
   let mappedInputs = inputs.map((e) => {
     if (e.id > 2) {
@@ -59,6 +60,16 @@ const ComboBuilder = () => {
       copy.push(inputs[1]);
     }
     addToCurrent(copy);
+  };
+
+  const clearCombo = () => {
+    addToCurrent([]);
+    setValue("")
+  };
+
+  const saveCombo = () => {
+    // TODO axios save combo to server
+    router.push("/home");
   };
 
   const MenuItems = ({ children }) => (
@@ -208,6 +219,10 @@ const ComboBuilder = () => {
     }
   };
 
+  const handleChange = (e) => {
+    setValue(e.target.value)
+  }
+
   return (
     <Box
       borderWidth={3}
@@ -222,27 +237,36 @@ const ComboBuilder = () => {
       <Heading textAlign="center" mb={5}>
         Click on an image to add to your combo!
       </Heading>
+      <Flex direction="row" justify="space-around" align="center" mb={5}>
+        <Menu>
+          <MenuButton
+            colorScheme="orange"
+            as={Button}
+            rightIcon={<ChevronDownIcon />}
+          >
+            {currentGame}
+          </MenuButton>
+          <MenuList>
+            <MenuItem onClick={() => selectGameFunction("GBVS")}>GBVS</MenuItem>
+            <MenuItem onClick={() => selectGameFunction("UNICLR")}>
+              UNICLR
+            </MenuItem>
+            <MenuItem onClick={() => selectGameFunction("SFV")}>SFV</MenuItem>
+            <MenuItem onClick={() => selectGameFunction("GGST")}>GGST</MenuItem>
+          </MenuList>
+        </Menu>
 
-      <Menu >
-        <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-          {currentGame}
-        </MenuButton>
-        <MenuList>
-          <MenuItem onClick={() => selectGameFunction("GBVS")}>GBVS</MenuItem>
-          <MenuItem onClick={() => selectGameFunction("UNICLR")}>
-            UNICLR
-          </MenuItem>
-          <MenuItem onClick={() => selectGameFunction("SFV")}>SFV</MenuItem>
-          <MenuItem onClick={() => selectGameFunction("GGST")}>GGST</MenuItem>
-        </MenuList>
-      </Menu>
-
-      <Menu>
-        <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-          {currentChar}
-        </MenuButton>
-        <MenuList>{renderSwitch(currentGame)}</MenuList>
-      </Menu>
+        <Menu>
+          <MenuButton
+            colorScheme="orange"
+            as={Button}
+            rightIcon={<ChevronDownIcon />}
+          >
+            {currentChar}
+          </MenuButton>
+          <MenuList>{renderSwitch(currentGame)}</MenuList>
+        </Menu>
+      </Flex>
 
       <Box
         boxShadow="inner"
@@ -254,6 +278,16 @@ const ComboBuilder = () => {
           {mappedInputs}
         </Flex>
       </Box>
+
+      <Flex direction="row" justify="center">
+        <Input
+          mt={8}
+          placeholder="Combo Title:"
+          w="lg"
+          onChange={handleChange}
+          value={value}
+        />
+      </Flex>
 
       <Box
         boxShadow="inner"
@@ -267,6 +301,14 @@ const ComboBuilder = () => {
           {mappedCurrent}
         </Flex>
       </Box>
+      <Flex direction="row" justify="space-evenly">
+        <Button w="lg" mt={5} colorScheme="orange" onClick={saveCombo}>
+          Save
+        </Button>
+        <Button w="lg" mt={5} colorScheme="orange" onClick={clearCombo}>
+          Clear
+        </Button>
+      </Flex>
     </Box>
   );
 };
