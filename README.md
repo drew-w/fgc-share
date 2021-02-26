@@ -39,10 +39,10 @@ CREATE TABLE combos (
 ```
 
 ```SQL
-CREATE TABLE follows (
+CREATE TABLE saved (
     id SERIAL PRIMARY KEY,
     following_user_id INT REFERENCES users(user_id),
-    followed_user_id INT REFERENCES users(user_id)
+    saved_post_id INT REFERENCES combos(combo_id)
 )
 ```
 
