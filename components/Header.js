@@ -54,17 +54,11 @@ const Header = () => {
           pt={[4, 4, 0, 0]}
           flexGrow={1}
         >
-          <LinkN href="/home">
-            <MenuItems>Home</MenuItems>
-          </LinkN>
+          <MenuItems>Home</MenuItems>
 
-          <LinkN href="/create">
-            <MenuItems>Create</MenuItems>
-          </LinkN>
+          <MenuItems>Create</MenuItems>
 
-          <LinkN href="/">
-            <MenuItems>Logout</MenuItems>
-          </LinkN>
+          <MenuItems>Logout</MenuItems>
 
           <DarkModeSwitcher />
         </Stack>
@@ -78,9 +72,12 @@ const Header = () => {
 };
 
 const MenuItems = ({ children }) => (
-  <Link mt={{ base: 4, md: 0 }} mr={6} display="block">
-    {children}
-  </Link>
+
+  <LinkN href={children === 'Logout' ? '/' : `/${children.toLowerCase()}`}>
+    <Link mt={{ base: 4, md: 0 }} mr={6} display="block">
+      {children}
+    </Link>
+  </LinkN>
 );
 
 export default Header;
