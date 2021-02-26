@@ -10,6 +10,8 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  Text,
+  Stack,
 } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import inputsGBVS from "../temp/inputs.json";
@@ -26,7 +28,7 @@ const ComboBuilder = () => {
   const [currentGame, selectGame] = useState("GBVS");
   const [currentChar, selectChar] = useState("Gran");
   const [inputs, changeInputs] = useState(inputsGBVS);
-  const [value, setValue] = useState("")
+  const [value, setValue] = useState("");
 
   let mappedInputs = inputs.map((e) => {
     if (e.id > 2) {
@@ -64,10 +66,16 @@ const ComboBuilder = () => {
 
   const clearCombo = () => {
     addToCurrent([]);
-    setValue("")
+    setValue("");
   };
 
   const saveCombo = () => {
+    const newCombo = {
+      name: value,
+      game: currentGame,
+      character: currentChar,
+      inputs: current,
+    };
     // TODO axios save combo to server
     router.push("/home");
   };
@@ -220,8 +228,8 @@ const ComboBuilder = () => {
   };
 
   const handleChange = (e) => {
-    setValue(e.target.value)
-  }
+    setValue(e.target.value);
+  };
 
   return (
     <Box
@@ -238,34 +246,44 @@ const ComboBuilder = () => {
         Click on an image to add to your combo!
       </Heading>
       <Flex direction="row" justify="space-around" align="center" mb={5}>
-        <Menu>
-          <MenuButton
-            colorScheme="orange"
-            as={Button}
-            rightIcon={<ChevronDownIcon />}
-          >
-            {currentGame}
-          </MenuButton>
-          <MenuList>
-            <MenuItem onClick={() => selectGameFunction("GBVS")}>GBVS</MenuItem>
-            <MenuItem onClick={() => selectGameFunction("UNICLR")}>
-              UNICLR
-            </MenuItem>
-            <MenuItem onClick={() => selectGameFunction("SFV")}>SFV</MenuItem>
-            <MenuItem onClick={() => selectGameFunction("GGST")}>GGST</MenuItem>
-          </MenuList>
-        </Menu>
+        <Stack direction="row" align="center">
+          <Text>Game: </Text>
+          <Menu>
+            <MenuButton
+              colorScheme="orange"
+              as={Button}
+              rightIcon={<ChevronDownIcon />}
+            >
+              {currentGame}
+            </MenuButton>
+            <MenuList>
+              <MenuItem onClick={() => selectGameFunction("GBVS")}>
+                GBVS
+              </MenuItem>
+              <MenuItem onClick={() => selectGameFunction("UNICLR")}>
+                UNICLR
+              </MenuItem>
+              <MenuItem onClick={() => selectGameFunction("SFV")}>SFV</MenuItem>
+              <MenuItem onClick={() => selectGameFunction("GGST")}>
+                GGST
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        </Stack>
+        <Stack direction="row" align="center">
+          <Text>Character: </Text>
+          <Menu>
+            <MenuButton
+              colorScheme="orange"
+              as={Button}
+              rightIcon={<ChevronDownIcon />}
+            >
+              {currentChar}
+            </MenuButton>
 
-        <Menu>
-          <MenuButton
-            colorScheme="orange"
-            as={Button}
-            rightIcon={<ChevronDownIcon />}
-          >
-            {currentChar}
-          </MenuButton>
-          <MenuList>{renderSwitch(currentGame)}</MenuList>
-        </Menu>
+            <MenuList>{renderSwitch(currentGame)}</MenuList>
+          </Menu>
+        </Stack>
       </Flex>
 
       <Box
@@ -294,7 +312,7 @@ const ComboBuilder = () => {
         w="100%"
         p={8}
         backgroundColor={colorMode === "dark" ? "gray.300" : "orange.100"}
-        minHeight="400px"
+        minHeight={["200px","200px","300px","400px"]}
         mt={8}
       >
         <Flex direction="row" wrap="wrap">
@@ -302,10 +320,15 @@ const ComboBuilder = () => {
         </Flex>
       </Box>
       <Flex direction="row" justify="space-evenly">
-        <Button w="lg" mt={5} colorScheme="orange" onClick={saveCombo}>
+        <Button
+          w={["xs", "sm", "lg", "lg"]}
+          mt={5}
+          colorScheme="orange"
+          onClick={saveCombo}
+        >
           Save
         </Button>
-        <Button w="lg" mt={5} colorScheme="orange" onClick={clearCombo}>
+        <Button w={["xs", "sm", "lg", "lg"]} mt={5} colorScheme="orange" onClick={clearCombo}>
           Clear
         </Button>
       </Flex>

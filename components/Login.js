@@ -29,7 +29,7 @@ const Login = () => {
       <Flex
         direction={["column", "column", "row", "row"]}
         align="center"
-        justify={["flex-end", "flex-end", "flex-start" ,"flex-start"]}
+        justify={["flex-end", "flex-end", "flex-start", "flex-start"]}
         m={5}
         mr={[5, 5, 10, 10]}
       >
@@ -56,7 +56,9 @@ const Login = () => {
           <Box textAlign="center">
             <Heading>Sign In</Heading>
             <Text>
-              <Link>Or Create an Account</Link>
+              <LinkN href="/register">
+                <Link>Or Create an Account</Link>
+              </LinkN>
             </Text>
           </Box>
           <Box>
@@ -69,10 +71,14 @@ const Login = () => {
                 <FormLabel>Password</FormLabel>
                 <Input type="password" placeholder="Password" />
               </FormControl>
-
               <Box textAlign="center" m={2}>
-                <Link>Forgot Your Password?</Link>
+                <LinkN href="/forgot">
+                  <Link>Forgot Your Password?</Link>
+                </LinkN>
               </Box>
+              {/* 
+              // TODO AUTHENTICATION NEEDS TO HAPPEN HERE 
+              */}
               <LinkN href="/home">
                 <Button width="full" mt={4} colorScheme={COLOR_SCHEME}>
                   Sign In

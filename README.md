@@ -32,29 +32,18 @@ CREATE TABLE users (
 
 ```SQL
 CREATE TABLE combos (
-    combo_id SERIAL PRIMARY KEY,
-    moves REFERENCES moves(moves_id)
+    combo_id SERIAL PRIMARY KEY, 
+    combo_details JSON NOT NULL,
     user_id INT REFERENCES users(user_id)
-
 )
 ```
 
 ```SQL
-CREATE TABLE moves (
-    moves_id SERIAL PRIMARY KEY,
-    type TEXT NOT NULL,
-    image TEXT NOT NULL,
+CREATE TABLE follows (
+    id SERIAL PRIMARY KEY,
+    following_user_id INT REFERENCES users(user_id),
+    followed_user_id INT REFERENCES users(user_id)
 )
-
-SELECT c.id, c.title, m.type, m.image FROM combo c
-JOIN moves m ON c.id = m.moves_id
-```
-
-```JS
-createMoves: (req, res) => {
-    db.create_combo(object)
-    req.body.comboArr.forEach(e => db.create_combo(e))
-}
 ```
 
 ## SERVER
