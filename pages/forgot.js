@@ -17,7 +17,7 @@ import {
       const router = useRouter()
     const recoverPassword = () => {
         alert('email sent')
-        router.push("/home")
+        router.push("/")
     }
     const COLOR_SCHEME = "orange";
     return (
