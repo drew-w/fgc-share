@@ -1,26 +1,35 @@
-require('dotenv').config()
-const express = require('express')
-const app = express()
-const massive = require('massive')
-const session = require('express-session')
-const {CONNECTION_STRING, SESSION_SECRET, SERVER_PORT} = process.env
+require("dotenv").config();
+const express = require("express");
+const app = express();
+const massive = require("massive");
+const session = require("express-session");
+const { CONNECTION_STRING, SESSION_SECRET, SERVER_PORT } = process.env;
 
+app.use(express.json());
 
 //Middleware
-app.use(express.json)
-app.use(session({
+app.use(
+  session({
     secret: SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
-    cookie: {maxAge: 1000*60*60*24}
-}))
+    cookie: { maxAge: null, secure: false },
+  })
+);
 
 //Database connection
-export const db = massive({
-    connectionString: CONNECTION_STRING,
-    ssl: {rejectUnauthorized: false}
+massive({
+  connectionString: CONNECTION_STRING,
+  ssl: { rejectUnauthorized: false },
 })
+  .then((db) => {
+    app.set("db", db);
+    app.listen(SERVER_PORT, () => console.log(`running on ${SERVER_PORT}`));
+    console.log("db connected");
+  })
+  .catch((err) => console.log(err));
 
 //Endpoints
+
 
 //Auth endpoints
