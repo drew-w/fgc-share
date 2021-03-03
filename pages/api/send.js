@@ -22,7 +22,6 @@ export default async (req, res) => {
 
     console.log("Message sent: %s", info.messageId);
     console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-    alert("email sent!");
-    res.sendStatus(200);
+    res.send("success");
   }
 };

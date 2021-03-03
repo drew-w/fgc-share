@@ -26,7 +26,7 @@ const forgot = () => {
       .then((res) => {
         router.push("/");
       })
-      .catch(alert('you suck!'));
+      .catch(alert("you suck!"));
   };
   const COLOR_SCHEME = "orange";
 

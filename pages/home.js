@@ -8,11 +8,23 @@ import {
   TabPanel,
 } from "@chakra-ui/react";
 import ComboDisplay from "../components/ComboDisplay";
+import { useUser } from "../hooks/useUser";
 
-const home = () => {
+export default function Home() {
+  const user = useUser();
+
+  if (!user) {
+    return (
+      <>
+        <Header />
+        Loading...
+      </>
+    );
+  }
+
   return (
     <>
-      <Header />
+      <Header username={user.username} />
       <Tabs variant="solid-rounded" colorScheme="orange" isFitted>
         <TabList>
           <Tab>All</Tab>
@@ -27,7 +39,7 @@ const home = () => {
               {/*
           // TODO GET ALL POSTS FROM DB AND DISPLAY THEM HERE
           */}
-              {/* 
+              {/*
           //! These hardcoded components will be removed once the backend is finished
           */}
               <Flex align="center" justify="center" direction="column">
@@ -36,7 +48,7 @@ const home = () => {
                 <ComboDisplay />
                 <ComboDisplay />
               </Flex>
-              {/* 
+              {/*
         //! DELETE THE ABOVE ^^^^^^^^^
         */}
             </Flex>
@@ -49,6 +61,4 @@ const home = () => {
       </Tabs>
     </>
   );
-};
-
-export default home;
+}

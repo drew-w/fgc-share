@@ -1,27 +1,32 @@
 const initialState = {
   user: null,
+  isLoading: false,
 };
 
-export function setUser(payload) {
-  return {
-    type: "SET_USER",
-    payload: payload,
-  };
-}
+export const setLoading = (payload) => ({
+  type: "SET_LOADING",
+  payload,
+});
+
+export const setUser = (payload) => ({
+  type: "SET_USER",
+  payload,
+});
 
 export default function authReducer(state = initialState, action) {
   switch (action.type) {
     case "SET_USER":
-        return {...state, user: action.payload}
+      return { ...state, user: action.payload, isLoading: false };
+    case "SET_LOADING":
+      return { ...state, isLoading: action.payload };
     default:
       return state;
-    
   }
 }
 
 /*
 * FRONTEND CODE BELOW:
-in auth component: 
+in auth component:
 * import setUser from the authReducer
 * import {connect} from react-redux
 export default connect(null, {setUser})(componentName)

@@ -312,7 +312,7 @@ const ComboBuilder = () => {
         w="100%"
         p={8}
         backgroundColor={colorMode === "dark" ? "gray.300" : "orange.100"}
-        minHeight={["200px","200px","300px","400px"]}
+        minHeight={["200px", "200px", "300px", "400px"]}
         mt={8}
       >
         <Flex direction="row" wrap="wrap">
@@ -328,7 +328,12 @@ const ComboBuilder = () => {
         >
           Save
         </Button>
-        <Button w={["xs", "sm", "lg", "lg"]} mt={5} colorScheme="orange" onClick={clearCombo}>
+        <Button
+          w={["xs", "sm", "lg", "lg"]}
+          mt={5}
+          colorScheme="orange"
+          onClick={clearCombo}
+        >
           Clear
         </Button>
       </Flex>

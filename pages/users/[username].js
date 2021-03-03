@@ -1,5 +1,5 @@
 import Header from "../../components/Header";
-import ComboDisplay from "../../components/ComboDisplay"
+import ComboDisplay from "../../components/ComboDisplay";
 import {
   Flex,
   Tabs,
@@ -7,7 +7,7 @@ import {
   TabPanels,
   Tab,
   TabPanel,
-} from "@chakra-ui/react"
+} from "@chakra-ui/react";
 
 const username = () => {
   return (
