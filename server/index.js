@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const massive = require("massive");
 const session = require("express-session");
+const authCtrl = require("./controllers/authController");
 const { CONNECTION_STRING, SESSION_SECRET, SERVER_PORT } = process.env;
 
 app.use(express.json());
@@ -31,5 +32,5 @@ massive({
 
 //Endpoints
 
-
 //Auth endpoints
+app.post("/api/auth/registers", authCtrl.register);
