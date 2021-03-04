@@ -12,12 +12,49 @@ import {
   Image,
 } from "@chakra-ui/react";
 import LinkN from "next/link";
+import axios from "axios";
+import { useState } from "react";
+import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
 
 import DarkModeSwitcher from "./DarkModeSwitcher";
+import { setLoading, setUser } from "../redux/auth";
 
 const Login = () => {
   const COLOR_SCHEME = "orange";
+  const router = useRouter();
+  const [state, setState] = useState({
+    email: "eesnamdoow@gmail.com",
+    password: "password",
+  });
+  const dispatch = useDispatch();
+  const isLoading = useSelector((state) => state.auth.isLoading);
   const { colorMode } = useColorMode();
+
+  const login = () => {
+    dispatch(setLoading(true));
+
+    axios
+      .post("/api/auth/login", state)
+      .then((res) => {
+        dispatch(setUser(res.data));
+        router.push("/home");
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("you suck!");
+        dispatch(setLoading(false))
+      });
+  };
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setState({
+      ...state,
+      [e.target.name]: value,
+    });
+  };
+
   return (
     <Flex
       direction={["column", "column", "row", "row"]}
@@ -65,25 +102,38 @@ const Login = () => {
             <form>
               <FormControl m={2}>
                 <FormLabel>Email Address</FormLabel>
-                <Input type="email" placeholder="Email Address" />
+                <Input
+                  type="email"
+                  name="email"
+                  placeholder="Email Address"
+                  value={state.email}
+                  onChange={handleChange}
+                />
               </FormControl>
               <FormControl m={2}>
                 <FormLabel>Password</FormLabel>
-                <Input type="password" placeholder="Password" />
+                <Input
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  value={state.password}
+                  onChange={handleChange}
+                />
               </FormControl>
               <Box textAlign="center" m={2}>
                 <LinkN href="/forgot">
                   <Link>Forgot Your Password?</Link>
                 </LinkN>
               </Box>
-              {/* 
-              // TODO AUTHENTICATION NEEDS TO HAPPEN HERE 
-              */}
-              <LinkN href="/home">
-                <Button width="full" mt={4} colorScheme={COLOR_SCHEME}>
-                  Sign In
-                </Button>
-              </LinkN>
+              <Button
+                width="full"
+                mt={4}
+                colorScheme={COLOR_SCHEME}
+                onClick={login}
+                disabled={isLoading}
+              >
+                Sign In
+              </Button>
             </form>
           </Box>
         </Box>

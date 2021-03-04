@@ -11,13 +11,19 @@ export default async (req, res) => {
       },
     });
 
+    const body = (
+      <div>
+
+      </div>
+    )
+
     // send mail with defined transport object
     let info = await transporter.sendMail({
       from: '"FGC Share" <eleazar.moen@ethereal.email>', // sender address
       to: "eesnamdoow@gmail.com", // list of receivers
       subject: "Password Recovery", // Subject line
       text: "Hello world?", // plain text body
-      html: "<b>Hello world?</b>", // html body
+      html: body, // html body
     });
 
     console.log("Message sent: %s", info.messageId);

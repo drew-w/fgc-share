@@ -12,6 +12,7 @@ export function useUser() {
     const loadUser = async () => {
       const { data: fetchedUser } = await axios.get("/api/auth/user");
 
+      //? the OR instead of AND seems to work. Might break once login works
       if (!user && !fetchedUser) {
         Router.push("/");
       }

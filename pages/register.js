@@ -7,7 +7,6 @@ import {
   Button,
   Flex,
 } from "@chakra-ui/react";
-import LinkN from "next/link";
 import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/router";

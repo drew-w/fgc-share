@@ -7,20 +7,71 @@ import {
   Tab,
   TabPanel,
 } from "@chakra-ui/react";
+import { SpinnerIcon } from "@chakra-ui/icons";
 import ComboDisplay from "../components/ComboDisplay";
 import { useUser } from "../hooks/useUser";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function Home() {
   const user = useUser();
+  const [state, setState] = useState({
+    posts: [],
+  });
+
+  const getPosts = () => {
+    axios
+      .get("/api/post/combo")
+      .then((res) => {
+        setState({
+          ...state,
+          posts: res.data,
+        });
+      })
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    getPosts();
+  }, [setState, getPosts]);
 
   if (!user) {
     return (
       <>
         <Header />
-        Loading...
+        <Flex justify="center" align="center">
+          <SpinnerIcon w="200px" />
+        </Flex>
       </>
     );
   }
+
+  const mapCombos = state.posts.map((e, i) => {
+    return (
+      <div key={i}>
+        <ComboDisplay combo={e} />
+      </div>
+    );
+  });
+
+  const filterGames = (game) => {
+    const filterGame = state.posts.filter(
+      (combo) => combo.combo_details.game === game
+    );
+    const fgMapped = filterGame.map((e, i) => {
+      return (
+        <div key={i}>
+          <Flex direction="column">
+            <Flex align="center" justify="center" direction="column">
+              <ComboDisplay combo={e} />
+            </Flex>
+          </Flex>
+        </div>
+      );
+    });
+
+    return fgMapped;
+  };
 
   return (
     <>
@@ -36,27 +87,21 @@ export default function Home() {
         <TabPanels>
           <TabPanel>
             <Flex direction="column">
-              {/*
-          // TODO GET ALL POSTS FROM DB AND DISPLAY THEM HERE
-          */}
-              {/*
-          //! These hardcoded components will be removed once the backend is finished
-          */}
               <Flex align="center" justify="center" direction="column">
-                <ComboDisplay />
-                <ComboDisplay />
-                <ComboDisplay />
-                <ComboDisplay />
+                {mapCombos}
               </Flex>
-              {/*
-        //! DELETE THE ABOVE ^^^^^^^^^
-        */}
             </Flex>
           </TabPanel>
-          <TabPanel>Only GranBlue</TabPanel>
-          <TabPanel>Only UnderNight</TabPanel>
-          <TabPanel>Only Street Fighter</TabPanel>
-          <TabPanel>Only Guilty Gear</TabPanel>
+          <TabPanel>
+            <Flex direction="column">
+              <Flex align="center" justify="center" direction="column">
+                {filterGames("GBVS")}
+              </Flex>
+            </Flex>
+          </TabPanel>
+          <TabPanel>{filterGames("UNICLR")}</TabPanel>
+          <TabPanel>{filterGames("SFV")}</TabPanel>
+          <TabPanel>{filterGames("GGST")}</TabPanel>
         </TabPanels>
       </Tabs>
     </>

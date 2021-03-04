@@ -20,8 +20,9 @@ import inputsSFV from "../temp/inputs-sf.json";
 import inputsGG from "../temp/inputs-gg.json";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import axios from "axios";
 
-const ComboBuilder = () => {
+const ComboBuilder = ({userID}) => {
   const { colorMode } = useColorMode();
   const router = useRouter();
   const [current, addToCurrent] = useState([]);
@@ -75,9 +76,16 @@ const ComboBuilder = () => {
       game: currentGame,
       character: currentChar,
       inputs: current,
+      id: userID,
     };
-    // TODO axios save combo to server
-    router.push("/home");
+    alert(userID)
+    axios
+      .post("/api/post/combo", newCombo)
+      .then(() => {
+        clearCombo();
+        router.push("/home");
+      })
+      .catch((err) => console.log(err));
   };
 
   const MenuItems = ({ children }) => (

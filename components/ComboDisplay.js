@@ -14,19 +14,15 @@ import {
 import { CheckIcon, CloseIcon, EditIcon } from "@chakra-ui/icons";
 import { useState } from "react";
 
-//! ----------------------------------------------
-import comboInfo from "../inputs.json";
-// ! the above input from inputs.json will be removed and replaced with
-//! an axios call to the server
+const ComboDisplay = ( {combo} ) => {
 
-const ComboDisplay = () => {
-  // TODO replace the destructured object below with an axios call
-  const { comboName, game, character, moves } = comboInfo;
-  // TODO ---------------------------------
+  const { combo_id, combo_details, user_id } = combo;
+  const {character, game, name, inputs} = combo_details
+
   const { colorMode } = useColorMode();
   const [isSaved, setIsSaved] = useState(false);
 
-  const mappedCombo = moves.map((e, i) => {
+  const mappedCombo = inputs.map((e, i) => {
     return (
       <div key={i}>
         <Image src={e.image} h={["25px", "30px", "50px", "50px"]} />
@@ -47,7 +43,7 @@ const ComboDisplay = () => {
         borderColor={colorMode === "dark" ? "orange.300" : "orange.500"}
       >
         <Heading textAlign="center" mb={3}>
-          {comboName}
+          {name}
         </Heading>
         <Flex direction="row" justify="space-between" my={5}>
           <Stack direction="row">
