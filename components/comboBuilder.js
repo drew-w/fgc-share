@@ -78,7 +78,6 @@ const ComboBuilder = ({userID}) => {
       inputs: current,
       id: userID,
     };
-    alert(userID)
     axios
       .post("/api/post/combo", newCombo)
       .then(() => {

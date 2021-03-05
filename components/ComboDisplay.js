@@ -3,24 +3,48 @@ import {
   Flex,
   Box,
   Button,
+  ButtonGroup,
   Heading,
   Image,
   Text,
   useColorMode,
   Link,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverFooter,
+  PopoverArrow,
+  PopoverCloseButton,
 } from "@chakra-ui/react";
-// TODO once the database is setup, check session user id and combo creator id, and
-// TODO if they are the same, allow editing and render these icons:
-import { CheckIcon, CloseIcon, EditIcon } from "@chakra-ui/icons";
+import { EditIcon, DeleteIcon } from "@chakra-ui/icons";
 import { useState } from "react";
+import axios from "axios";
 
-const ComboDisplay = ( {combo} ) => {
-
+const ComboDisplay = ({ combo, currentUser, updatePosts }) => {
   const { combo_id, combo_details, user_id } = combo;
-  const {character, game, name, inputs} = combo_details
+  const { character, game, name, inputs } = combo_details;
 
   const { colorMode } = useColorMode();
-  const [isSaved, setIsSaved] = useState(false);
+
+  const [state, setState] = useState({
+    isSaved: false,
+    isOpen: false,
+  });
+  const deleteOpen = () => setState({ ...state, isOpen: !state.isOpen });
+  const deleteClose = () => setState({ ...state, isOpen: false });
+
+  const deletePost = () => {
+    axios
+      .delete(`/api/post/${combo_id}`)
+      .then((res) => {
+        console.log(res);
+        deleteClose();
+        updatePosts();
+      })
+      .catch((err) => console.log(err));
+  };
 
   const mappedCombo = inputs.map((e, i) => {
     return (
@@ -29,7 +53,7 @@ const ComboDisplay = ( {combo} ) => {
       </div>
     );
   });
-
+  // console.log(currentUser)
   return (
     <div>
       <Box
@@ -45,6 +69,52 @@ const ComboDisplay = ( {combo} ) => {
         <Heading textAlign="center" mb={3}>
           {name}
         </Heading>
+
+        {currentUser.id === user_id ? (
+          <Flex direction="row" align="center" justify="flex-end">
+            <Button w={5} mx={2}>
+              <EditIcon />
+            </Button>
+
+            <>
+              <Popover
+                returnFocusOnClose={false}
+                isOpen={state.isOpen}
+                onClose={deleteClose}
+                placement="bottom-end"
+                closeOnBlur={false}
+              >
+                <PopoverTrigger>
+                  <Button w={5} mx={2} onClick={deleteOpen}>
+                    <DeleteIcon />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent>
+                  <PopoverHeader fontWeight="semibold">
+                    Confirmation
+                  </PopoverHeader>
+                  <PopoverArrow />
+                  <PopoverCloseButton />
+                  <PopoverBody>
+                    Are you sure you want to delete this post?
+                  </PopoverBody>
+                  <PopoverFooter d="flex" justifyContent="flex-end">
+                    <ButtonGroup size="sm">
+                      <Button variant="outline" onClick={deleteClose}>
+                        Cancel
+                      </Button>
+                      <Button colorScheme="red" onClick={deletePost}>
+                        Delete
+                      </Button>
+                    </ButtonGroup>
+                  </PopoverFooter>
+                </PopoverContent>
+              </Popover>
+            </>
+          </Flex>
+        ) : (
+          <></>
+        )}
         <Flex direction="row" justify="space-between" my={5}>
           <Stack direction="row">
             <Text>
@@ -70,9 +140,9 @@ const ComboDisplay = ( {combo} ) => {
           w="full"
           colorScheme="orange"
           mt={5}
-          onClick={() => setIsSaved(!isSaved)}
+          onClick={() => setState({ ...state, isSaved: !state.isSaved })}
         >
-          {isSaved ? "Unsave" : "Save"}
+          {state.isSaved ? "Unsave" : "Save"}
         </Button>
       </Box>
     </div>

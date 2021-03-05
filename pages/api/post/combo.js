@@ -31,4 +31,11 @@ export default async (req, res) => {
 
     return res.status(200).send(combos);
   }
+
+  if (req.method === "DELETE"){
+      console.log(req.params)
+    //   const deleted = await db.combos.destroy()
+
+    return res.status(200)
+  }
 };
