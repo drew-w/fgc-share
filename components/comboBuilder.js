@@ -22,7 +22,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 
-const ComboBuilder = ({userID}) => {
+const ComboBuilder = ({ userID }) => {
   const { colorMode } = useColorMode();
   const router = useRouter();
   const [current, addToCurrent] = useState([]);
@@ -80,7 +80,8 @@ const ComboBuilder = ({userID}) => {
     };
     axios
       .post("/api/post/combo", newCombo)
-      .then(() => {
+      .then((res) => {
+        console.log(res.data);
         clearCombo();
         router.push("/home");
       })

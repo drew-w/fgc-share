@@ -13,29 +13,22 @@ export default async (req, res) => {
       user_id: id,
     });
 
-    return res.status(200);
+    return res.status(200).end(`the combo has been saved`);
   }
 
   if (req.method === "GET") {
     const combos = await db.combos.find(
       {},
-    //   {
-    //     order: [
-    //       {
-    //         field: ['combo_id, combo_details, user_id'] ,
-    //         direction: "desc",
-    //       },
-    //     ],
-    //   }
+      {
+        order: [
+          {
+            field: 'combo_id',
+            direction: "desc",
+          },
+        ],
+      }
     );
 
     return res.status(200).send(combos);
-  }
-
-  if (req.method === "DELETE"){
-      console.log(req.params)
-    //   const deleted = await db.combos.destroy()
-
-    return res.status(200)
   }
 };

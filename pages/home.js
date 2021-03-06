@@ -32,8 +32,8 @@ export default function Home() {
   };
 
   useEffect(() => {
-    getPosts();
-  }, [setState]);
+    getPosts()
+  }, );
 
   if (!user) {
     return (
@@ -49,7 +49,7 @@ export default function Home() {
   const mapCombos = state.posts.map((e, i) => {
     return (
       <div key={i}>
-        <ComboDisplay combo={e} currentUser={user} updatePosts={getPosts}/>
+        <ComboDisplay combo={e} currentUser={user} updatePosts={getPosts} />
       </div>
     );
   });
@@ -63,7 +63,11 @@ export default function Home() {
         <div key={i}>
           <Flex direction="column">
             <Flex align="center" justify="center" direction="column">
-              <ComboDisplay combo={e} currentUser={user} updatePosts={getPosts} />
+              <ComboDisplay
+                combo={e}
+                currentUser={user}
+                updatePosts={getPosts}
+              />
             </Flex>
           </Flex>
         </div>

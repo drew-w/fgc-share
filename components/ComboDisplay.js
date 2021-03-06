@@ -39,7 +39,7 @@ const ComboDisplay = ({ combo, currentUser, updatePosts }) => {
     axios
       .delete(`/api/post/${combo_id}`)
       .then((res) => {
-        console.log(res);
+        console.log(res.data);
         deleteClose();
         updatePosts();
       })
