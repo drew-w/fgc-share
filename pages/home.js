@@ -33,9 +33,20 @@ export default function Home() {
 
   useEffect(() => {
     getPosts()
-  }, );
+  }, []);
 
   if (!user) {
+    return (
+      <>
+        <Header />
+        <Flex justify="center" align="center">
+          <SpinnerIcon w="200px" />
+        </Flex>
+      </>
+    );
+  }
+
+  if (state.posts === []) {
     return (
       <>
         <Header />

@@ -20,7 +20,7 @@ export default withSession(async (req, res) => {
     } else {
       const setUser = {
         id: user.user_id,
-        email: user.user_id,
+        email: user.email,
         username: user.username,
       };
       req.session.set("user", setUser);

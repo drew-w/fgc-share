@@ -9,6 +9,17 @@ export default async (req, res) => {
 
     await db.combos.destroy(cid);
 
-    res.end(`the combo ${cid} has been deleted.`);
+    res.send(`the combo ${cid} has been deleted.`);
+  }
+
+  if (req.method === "PUT") {
+    const {name, character} = req.body
+
+    // await db.combos.update(cid, {
+
+    // });
+    console.log(name, character)
+
+    res.send(`the combo has been deleted.`);
   }
 };

@@ -34,7 +34,7 @@ const Header = ({ username }) => {
         
         <Text>
           Hello, {/**/}
-          <LinkN href={`/users/username`}>
+          <LinkN href={`/users/${username}`}>
             <Link color="orange.400">{username}</Link>
           </LinkN>
         </Text>
