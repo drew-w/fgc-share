@@ -29,6 +29,7 @@ import {
   DeleteIcon,
   CheckIcon,
   ChevronDownIcon,
+  ChatIcon,
 } from "@chakra-ui/icons";
 import { useState } from "react";
 import axios from "axios";
@@ -56,18 +57,20 @@ const ComboDisplay = ({ combo, currentUser, updatePosts }) => {
   const editPost = () => setState({ ...state, isEditing: !state.isEditing });
 
   const saveEdits = async () => {
-    name = state.name;
-    console.log(name);
-    character = state.character;
+    if (name !== state.name || character !== state.character) {
+      name = state.name;
+      character = state.character;
 
-    await axios
-      .put(`/api/post/${combo_id}`, { name, character })
-      .then((res) => {
-        updatePosts();
-        setState({ ...state, isEditing: false });
-        console.log(res);
-      })
-      .catch((err) => console.log(err));
+      await axios
+        .put(`/api/post/${combo_id}`, { name, character })
+        .then((res) => {
+          updatePosts();
+          setState({ ...state, isEditing: false });
+          console.log(res);
+        })
+        .catch((err) => console.log(err));
+    }
+    else setState({ ...state, isEditing: false });
   };
 
   const renderSwitch = (game) => {
@@ -223,7 +226,7 @@ const ComboDisplay = ({ combo, currentUser, updatePosts }) => {
       </div>
     );
   });
-  // console.log(currentUser)
+
   return (
     <div>
       <Box
