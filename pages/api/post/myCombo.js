@@ -6,8 +6,6 @@ export default async (req, res) => {
   if (req.method === "GET") {
     const { ID } = req.query;
 
-    console.log(ID);
-
     const combos = await db.query(
       `select * from combos where user_id = ${ID} order by combo_id desc`
       // [1]

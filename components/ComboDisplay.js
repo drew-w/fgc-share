@@ -66,7 +66,7 @@ const ComboDisplay = ({ combo, currentUser, updatePosts }) => {
         .then((res) => {
           updatePosts();
           setState({ ...state, isEditing: false });
-          console.log(res);
+          console.log(res.data);
         })
         .catch((err) => console.log(err));
     }

@@ -17,7 +17,6 @@ const create = () => {
       </>
     );
   }
-  console.log(user)
   return (
     <>
       <Header username={user.username} />

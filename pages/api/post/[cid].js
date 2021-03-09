@@ -18,8 +18,6 @@ export default async (req, res) => {
       query: { cid },
     } = req;
 
-    console.log(name, character, cid);
-
     const [selected] = await db.query(
       `SELECT * FROM combos WHERE combo_id = ${cid}`
     );
