@@ -3,6 +3,7 @@ import { Flex, Box, Stack, Link, Text, Image } from "@chakra-ui/react";
 import { useState } from "react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import LinkN from "next/link";
+import {useRouter} from 'next/router'
 import { setUser } from "../redux/auth";
 import axios from "axios";
 import { useDispatch } from "react-redux";
@@ -10,6 +11,8 @@ import { useDispatch } from "react-redux";
 const Header = ({ username }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
+  const router = useRouter();
+
 
   const toggle = () => setIsOpen(!isOpen);
   return (
@@ -71,6 +74,8 @@ const Header = ({ username }) => {
             onClick={() => {
               axios.get("/api/auth/logout").then(() => {
                 dispatch(setUser(null));
+                router.push("/")
+
               });
             }}
           >
