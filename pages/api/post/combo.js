@@ -13,7 +13,7 @@ export default async (req, res) => {
       user_id: id,
     });
 
-    return res.status(200).end(`the combo has been saved`);
+    return res.status(200).send(`the combo has been saved`);
   }
 
   if (req.method === "GET") {

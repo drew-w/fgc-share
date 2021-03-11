@@ -32,8 +32,10 @@ export default function Home() {
   };
 
   useEffect(() => {
-    getPosts()
-  }, []);
+    if (user) {
+      getPosts();
+    }
+  }, [user]);
 
   if (!user) {
     return (
@@ -60,7 +62,11 @@ export default function Home() {
   const mapCombos = state.posts.map((e, i) => {
     return (
       <div key={i}>
-        <ComboDisplay combo={e} currentUser={user} updatePosts={getPosts} />
+        <ComboDisplay
+          combo={e}
+          currentUser={user}
+          updatePosts={getPosts}
+        />
       </div>
     );
   });

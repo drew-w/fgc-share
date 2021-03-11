@@ -22,16 +22,14 @@ import {
   MenuItem,
   MenuList,
   Input,
-  propNames,
 } from "@chakra-ui/react";
 import {
   EditIcon,
   DeleteIcon,
   CheckIcon,
   ChevronDownIcon,
-  ChatIcon,
 } from "@chakra-ui/icons";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 const ComboDisplay = ({ combo, currentUser, updatePosts }) => {
@@ -42,7 +40,6 @@ const ComboDisplay = ({ combo, currentUser, updatePosts }) => {
   const nameCopy = (" " + name).slice(1);
   const gameCopy = (" " + game).slice(1);
   const charCopy = (" " + character).slice(1);
-
   const [state, setState] = useState({
     isSaved: false,
     isOpen: false,
@@ -52,6 +49,21 @@ const ComboDisplay = ({ combo, currentUser, updatePosts }) => {
     game: gameCopy,
     character: charCopy,
   });
+
+  useEffect(() => {
+    axios
+      .get("/api/post/savePosts", { params: { ID: user_id } })
+      .then((res) => {
+        const savedPosts = res.data;
+        for (let i = 0; i < savedPosts.length; i++) {
+          if (savedPosts[i].saved_post_id === combo_id) {
+            setState({ ...state, isSaved: true });
+          }
+        }
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
   const deleteOpen = () => setState({ ...state, isOpen: !state.isOpen });
   const deleteClose = () => setState({ ...state, isOpen: false });
   const editPost = () => setState({ ...state, isEditing: !state.isEditing });
@@ -69,8 +81,7 @@ const ComboDisplay = ({ combo, currentUser, updatePosts }) => {
           console.log(res.data);
         })
         .catch((err) => console.log(err));
-    }
-    else setState({ ...state, isEditing: false });
+    } else setState({ ...state, isEditing: false });
   };
 
   const renderSwitch = (game) => {
@@ -213,6 +224,26 @@ const ComboDisplay = ({ combo, currentUser, updatePosts }) => {
       .catch((err) => console.log(err));
   };
 
+  const savePosts = () => {
+    if (state.isSaved) {
+      axios
+        .delete("/api/post/savePosts", { data: { combo_id, currentUser } })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => console.log(err));
+      setState({ ...state, isSaved: false });
+    } else {
+      axios
+        .post("api/post/savePosts", { combo_id, currentUser })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => console.log(err));
+      setState({ ...state, isSaved: true });
+    }
+  };
+
   const MenuItems = ({ children }) => (
     <MenuItem onClick={() => setState({ ...state, character: children })}>
       {children}
@@ -350,12 +381,7 @@ const ComboDisplay = ({ combo, currentUser, updatePosts }) => {
             {mappedCombo}
           </Flex>
         </Box>
-        <Button
-          w="full"
-          colorScheme="orange"
-          mt={5}
-          onClick={() => setState({ ...state, isSaved: !state.isSaved })}
-        >
+        <Button w="full" colorScheme="orange" mt={5} onClick={savePosts}>
           {state.isSaved ? "Unsave" : "Save"}
         </Button>
       </Box>

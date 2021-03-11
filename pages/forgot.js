@@ -8,7 +8,6 @@ import {
   Flex,
   Text,
 } from "@chakra-ui/react";
-import LinkN from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import axios from "axios";
@@ -20,13 +19,17 @@ const forgot = () => {
   const [email, setEmail] = useState();
 
   const recoverPassword = () => {
-    // TODO axios. get once server is working
     axios
-      .post("/api/send", email)
+      .post("/api/send", { email })
       .then((res) => {
+        console.log(res);
+        alert(res.data);
         router.push("/");
       })
-      .catch(alert("you suck!"));
+      .catch((err) => {
+        console.log(err);
+        alert(err);
+      });
   };
   const COLOR_SCHEME = "orange";
 
@@ -63,8 +66,8 @@ const forgot = () => {
           <Box textAlign="center">
             <Heading>Forgot Password?</Heading>
             <Text m={3}>
-              Enter your email address here. We'll send you and email with your
-              password.{" "}
+              Enter your email address here. We'll reset your account. You will
+              get an email with more instructions{" "}
             </Text>
           </Box>
           <Box my={5}>
@@ -84,7 +87,7 @@ const forgot = () => {
                 colorScheme={COLOR_SCHEME}
                 onClick={recoverPassword}
               >
-                Recover Password
+                Reset Account
               </Button>
             </form>
           </Box>

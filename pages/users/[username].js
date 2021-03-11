@@ -17,6 +17,7 @@ const username = () => {
   const user = useUser();
   const [state, setState] = useState({
     posts: [],
+    savedPosts: [],
   });
 
   const getPosts = () => {
@@ -30,6 +31,16 @@ const username = () => {
         // console.log(res)
       })
       .catch((err) => console.log(err));
+
+    axios
+      .get("/api/post/mySavedPosts", { params: { ID: user.id } })
+      .then((res) => {
+        setState({
+          ...state,
+          savedPosts: res.data,
+        });
+      })
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {
@@ -38,8 +49,15 @@ const username = () => {
     }
   }, [user]);
 
-
   const mapCombos = state.posts.map((e, i) => {
+    return (
+      <div key={i}>
+        <ComboDisplay combo={e} currentUser={user} updatePosts={getPosts} />
+      </div>
+    );
+  });
+
+  const mapSaved = state.savedPosts.map((e, i) => {
     return (
       <div key={i}>
         <ComboDisplay combo={e} currentUser={user} updatePosts={getPosts} />
@@ -68,13 +86,18 @@ const username = () => {
         <TabPanels>
           <TabPanel>
             <Flex direction="column">
-
               <Flex align="center" justify="center" direction="column">
                 {mapCombos}
               </Flex>
             </Flex>
           </TabPanel>
-          <TabPanel>Saved Combos here</TabPanel>
+          <TabPanel>
+            <Flex direction="column">
+              <Flex align="center" justify="center" direction="column">
+                {mapSaved}
+              </Flex>
+            </Flex>
+          </TabPanel>
         </TabPanels>
       </Tabs>
     </>
