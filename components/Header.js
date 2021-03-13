@@ -75,7 +75,6 @@ const Header = ({ username }) => {
               axios.get("/api/auth/logout").then(() => {
                 dispatch(setUser(null));
                 router.push("/")
-
               });
             }}
           >

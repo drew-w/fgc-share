@@ -8,7 +8,7 @@ export default async (req, res) => {
 
     const details = { game, character, name, inputs };
 
-    db.combos.insert({
+    await db.combos.insert({
       combo_details: details,
       user_id: id,
     });
@@ -22,7 +22,7 @@ export default async (req, res) => {
       {
         order: [
           {
-            field: 'combo_id',
+            field: "combo_id",
             direction: "desc",
           },
         ],

@@ -17,6 +17,7 @@ export default async (req, res) => {
     return res
       .status(200)
       .send(`the post with id ${combo_id} has been saved by user ${id}`);
+    
   }
 
   if (req.method === "DELETE") {
@@ -32,6 +33,7 @@ export default async (req, res) => {
     return res
       .status(200)
       .send(`the post with id ${combo_id} has been unsaved by user ${id}`);
+    
   }
 
   if (req.method === "GET") {
@@ -41,8 +43,9 @@ export default async (req, res) => {
       `SELECT * FROM saved WHERE following_user_id = ${ID}`
     );
 
-    // console.log(isSaved)
+    console.log(isSaved)
 
     return res.status(200).send(isSaved);
+    
   }
 };

@@ -19,7 +19,7 @@ export default async (req, res) => {
 
     const output = `
     <div>
-    <p>we deleted your account lmao. make a new one</p>
+    <p>Your account has been reset. You may create a new account with your email address. </p>
     </div>
     `;
     const transporter = nodemailer.createTransport({
