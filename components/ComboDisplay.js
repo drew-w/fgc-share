@@ -51,18 +51,25 @@ const ComboDisplay = ({ combo, currentUser, updatePosts }) => {
   });
 
   useEffect(() => {
-    axios
-      .get("/api/post/savePosts", { params: { ID: user_id } })
-      .then((res) => {
-        const savedPosts = res.data;
-        for (let i = 0; i < savedPosts.length; i++) {
-          if (savedPosts[i].saved_post_id === combo_id) {
-            setState({ ...state, isSaved: true });
+    if (currentUser) {
+      axios
+        .get("/api/post/savePosts", { params: { ID: currentUser.id } })
+        .then((res) => {
+          const savedPosts = res.data;
+
+          for (let i = 0; i < savedPosts.length; i++) {
+            if (savedPosts[i].saved_post_id === combo_id) {
+              console.log(
+                `the post id is ${combo_id}, the saved post id is ${savedPosts[i].saved_post_id}`
+              );
+
+              setState({ ...state, isSaved: true });
+            }
           }
-        }
-      })
-      .catch((err) => console.log(err));
-  }, []);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [currentUser]);
 
   const deleteOpen = () => setState({ ...state, isOpen: !state.isOpen });
   const deleteClose = () => setState({ ...state, isOpen: false });

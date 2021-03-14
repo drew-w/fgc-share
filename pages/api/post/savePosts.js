@@ -41,7 +41,7 @@ export default async (req, res) => {
       `SELECT * FROM saved WHERE following_user_id = ${ID}`
     );
 
-    // console.log(isSaved);
+    console.log(isSaved);
 
     return res.status(200).send(isSaved);
   }
