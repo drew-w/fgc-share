@@ -24,8 +24,8 @@ const Login = () => {
   const COLOR_SCHEME = "orange";
   const router = useRouter();
   const [state, setState] = useState({
-    email: "eesnamdoow@gmail.com",
-    password: "password",
+    email: "",
+    password: "",
   });
   const dispatch = useDispatch();
   const isLoading = useSelector((state) => state.auth.isLoading);
