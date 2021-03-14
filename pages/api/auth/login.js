@@ -1,14 +1,14 @@
 import bcrypt from "bcrypt";
 import withSession from "../../../lib/session";
-import { getDB } from "../../../lib/db";
+import db from "../../../lib/prisma";
 
 export default withSession(async (req, res) => {
-  const db = await getDB();
-
   if (req.method === "POST") {
     const { email, password } = req.body;
 
-    const user = await db.users.findOne({ email });
+    const user = await db.users.findFirst({
+      where: { email: email },
+    });
 
     if (!user) {
       return res.status(401).send("Incorrect Email or Password");

@@ -19,15 +19,14 @@ const username = () => {
     posts: [],
     savedPosts: [],
   });
+  const [posts, setPosts] = useState([]);
+  const [savePosts, setSavePosts] = useState([]);
 
   const getPosts = () => {
     axios
       .get("/api/post/myCombo", { params: { ID: user.id } })
       .then((res) => {
-        setState({
-          ...state,
-          posts: res.data,
-        });
+        setPosts(res.data);
         // console.log(res)
       })
       .catch((err) => console.log(err));
@@ -35,13 +34,10 @@ const username = () => {
     axios
       .get("/api/post/mySavedPosts", { params: { ID: user.id } })
       .then((res) => {
-        setState({
-          ...state,
-          savedPosts: res.data,
-        });
+        console.log(res);
+        setSavePosts(res.data);
       })
       .catch((err) => console.log(err));
-    console.log(state);
   };
 
   useEffect(() => {
@@ -50,7 +46,7 @@ const username = () => {
     }
   }, [user]);
 
-  const mapCombos = state.posts.map((e, i) => {
+  const mapCombos = posts.map((e, i) => {
     return (
       <div key={i}>
         <ComboDisplay combo={e} currentUser={user} updatePosts={getPosts} />
@@ -58,7 +54,7 @@ const username = () => {
     );
   });
 
-  const mapSaved = state.savedPosts.map((e, i) => {
+  const mapSaved = savePosts.map((e, i) => {
     return (
       <div key={i}>
         <ComboDisplay combo={e} currentUser={user} updatePosts={getPosts} />
@@ -66,7 +62,7 @@ const username = () => {
     );
   });
 
-  if (!user || state.posts === []) {
+  if (!user || posts === []) {
     return (
       <>
         <Header />
@@ -76,6 +72,7 @@ const username = () => {
       </>
     );
   }
+
   return (
     <>
       <Header username={user.username} />

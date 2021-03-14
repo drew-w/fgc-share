@@ -1,15 +1,15 @@
 import withSession from "../../../lib/session";
-import { getDB } from "../../../lib/db";
+import db from "../../../lib/prisma";
 
 export default withSession(async (req, res) => {
-  const db = await getDB();
-
   const user = req.session.get("user");
   if (!user) {
     return res.json({ isLoggedIn: false });
   }
 
-  const foundUser = await db.users.findOne({ user_id: user.id });
+  const foundUser = await db.users.findFirst({
+    where: { user_id: user.id },
+  });
 
   if (foundUser) {
     res.json({

@@ -1,16 +1,18 @@
 import bcrypt from "bcrypt";
 import withSession from "../../../lib/session";
-import { getDB } from "../../../lib/db";
+import db from "../../../lib/prisma";
 
 export default withSession(async (req, res) => {
-  const db = await getDB();
-
   if (req.method === "POST") {
     const { username, email, password } = req.body;
 
     const [userByUsername, userByEmail] = await Promise.all([
-      db.users.findOne({ username }),
-      db.users.findOne({ email }),
+      db.users.findFirst({
+        where: { username: username },
+      }),
+      db.users.findFirst({
+        where: { email: email },
+      }),
     ]);
 
     if (userByUsername) {
@@ -22,10 +24,12 @@ export default withSession(async (req, res) => {
 
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(password, salt);
-    const result = await db.users.insert({
-      username,
-      email,
-      password: hash,
+    const result = await db.users.create({
+      data: {
+        username,
+        email,
+        password: hash,
+      },
     });
     const user = {
       id: result.user_id,

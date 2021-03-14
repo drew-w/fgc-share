@@ -1,12 +1,10 @@
-import { getDB } from "../../../lib/db";
+import db from "../../../lib/prisma";
 
 export default async (req, res) => {
-  const db = await getDB();
-
   if (req.method === "GET") {
     const { ID } = req.query;
 
-    const combos = await db.query(
+    const combos = await db.$queryRaw(
       `select * from combos where user_id = ${ID} order by combo_id desc`
       // [1]
     );

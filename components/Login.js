@@ -42,8 +42,8 @@ const Login = () => {
       })
       .catch((err) => {
         console.log(err);
-        alert("you suck!");
-        dispatch(setLoading(false))
+        alert(err);
+        dispatch(setLoading(false));
       });
   };
 

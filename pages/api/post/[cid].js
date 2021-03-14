@@ -1,13 +1,16 @@
-import { getDB } from "../../../lib/db";
+import db from "../../../lib/prisma";
 
 export default async (req, res) => {
-  const db = await getDB();
   if (req.method === "DELETE") {
     const {
       query: { cid },
     } = req;
 
-    await db.combos.destroy(cid);
+    const cidInt = parseInt(cid, 10);
+
+    await db.combos.delete({
+      where: { combo_id: cidInt },
+    });
 
     res.send(`the combo ${cid} has been deleted.`);
   }
@@ -18,32 +21,23 @@ export default async (req, res) => {
       query: { cid },
     } = req;
 
-    const [selected] = await db.query(
+    const [selected] = await db.$queryRaw(
       `SELECT * FROM combos WHERE combo_id = ${cid}`
     );
 
-    const editedCombo = {
-      game: selected.combo_details.game,
-      character,
-      name,
-      inputs: selected.combo_details.inputs,
-    };
+    const cidInt = parseInt(cid, 10);
 
-    await db.combos.update({ combo_id: cid }, { combo_details: editedCombo });
+    await db.combos.update({
+      where: { combo_id: cidInt },
+      data: {
+        combo_details: {
+          game: selected.combo_details.game,
+          character,
+          name,
+          inputs: selected.combo_details.inputs,
+        },
+      },
+    });
     res.send(`the combo ${cid} has been updated.`);
   }
 };
-
-// const criteria = {
-//   user_id: userId
-// }
-
-// const changes = {
-//   last_login: currentTimestamp
-// }
-
-// const options = {
-//   single: true
-// }
-
-// req.app.get(constants.db).users.update(criteria, changes, options)

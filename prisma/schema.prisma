@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model combos {
+  combo_id      Int     @id @default(autoincrement())
+  combo_details Json    @db.Json
+  user_id       Int?
+  users         users?  @relation(fields: [user_id], references: [user_id])
+  saved         saved[]
+}
+
+model saved {
+  id                Int     @id @default(autoincrement())
+  following_user_id Int?
+  saved_post_id     Int?
+  users             users?  @relation(fields: [following_user_id], references: [user_id])
+  combos            combos? @relation(fields: [saved_post_id], references: [combo_id])
+}
+
+model users {
+  user_id  Int      @id @default(autoincrement())
+  email    String   @db.VarChar(45)
+  username String   @db.VarChar(25)
+  password String   @db.VarChar(250)
+  combos   combos[]
+  saved    saved[]
+}

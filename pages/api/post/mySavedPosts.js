@@ -1,12 +1,10 @@
-import { getDB } from "../../../lib/db";
+import db from "../../../lib/prisma";
 
 export default async (req, res) => {
-  const db = await getDB();
-
   if (req.method === "GET") {
     const { ID } = req.query;
 
-    let isSaved = await db.query(
+    let isSaved = await db.$queryRaw(
       `SELECT 
         users.user_id,
         combos.combo_details
@@ -14,15 +12,14 @@ export default async (req, res) => {
     JOIN saved  
       ON users.user_id = saved.following_user_id
     JOIN combos
-      ON combos.combo_id = saved.saved_post_id`
+      ON combos.combo_id = saved.saved_post_id
+      WHERE users.user_id = ${ID}`
     );
 
-    const usersSaved = isSaved.filter(
-        (post) => post.user_id === ID
-    )
+    console.log(isSaved);
 
-    console.log(usersSaved);
+    // const usersSaved = isSaved.filter((post) => post.user_id === ID);
 
-    return res.status(200).send(usersSaved);
+    return res.status(200).send(isSaved);
   }
 };
