@@ -42,7 +42,7 @@ const Login = () => {
       })
       .catch((err) => {
         console.log(err);
-        alert(err);
+        alert("incorrect username or password");
         dispatch(setLoading(false));
       });
   };
